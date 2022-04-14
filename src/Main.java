@@ -4,24 +4,20 @@ import java.io.IOException;
 
 public class Main {
 
+    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) {
-        var sb = new StringBuilder();
-        File srcDir = new File("C:\\Users\\ars-b\\Desktop\\Games\\src");
-        File resDir = new File("C:\\Users\\ars-b\\Desktop\\Games\\res");
-        File savegamesDir = new File("C:\\Users\\ars-b\\Desktop\\Games\\savegames");
-        File tempDir = new File("C:\\Users\\ars-b\\Desktop\\Games\\temp");
-        if (srcDir.mkdir()) sb.append("Каталог src создан успешно\n");
-        else sb.append("Каталог src не создан\n");
-        if (resDir.mkdir()) sb.append("Каталог res создан успешно\n");
-        else sb.append("Каталог res не создан\n");
-        if (tempDir.mkdir()) sb.append("Каталог temp создан успешно\n");
-        else sb.append("Каталог temp не создан\n");
-        File tempFile = new File(tempDir, "temp.txt");
-        try {
-            if (tempFile.createNewFile()) sb.append("Файл temp.txt создан успешно\n");
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
-        }
+        createDir("C:\\Games\\src", "src");
+        createDir("C:\\Games\\res", "res");
+        createDir("C:\\Games\\savegames", "savegames");
+        File tempDir = createDir("C:\\Games\\temp", "temp");
+        File mainDir = createDir("C:\\Games\\src\\main", "main");
+        createDir("C:\\Games\\src\\test", "test");
+        createFile(mainDir, "Main.java");
+        createFile(mainDir, "Utils.java");
+        createDir("C:\\Games\\res\\drawables", "drawables");
+        createDir("C:\\Games\\res\\vectors", "vectors");
+        createDir("C:\\Games\\res\\icons", "icons");
+        File tempFile = createFile(tempDir, "temp.txt");
         try {
             FileWriter writer = new FileWriter(tempFile);
             writer.write(sb.toString());
@@ -29,7 +25,25 @@ public class Main {
         } catch (IOException exception) {
             System.out.println(exception.getMessage());
         }
-        System.out.println(sb.toString());
+    }
 
+    static File createDir(String dir, String dirName) {
+        File file = new File(dir);
+        if (file.mkdir()) {
+            sb.append("Каталог " + dirName + " создан успешно\n");
+        } else {
+            sb.append("Каталог " + dirName + " не создан\n");
+        }
+        return file;
+    }
+
+    static File createFile(File file, String fileName) {
+        File file1 = new File(file, fileName);
+        try {
+            if (file1.createNewFile()) sb.append("Файл " + fileName + " создан успешно\n");
+        } catch (IOException exception) {
+            System.out.println(exception.getMessage());
+        }
+        return file1;
     }
 }
